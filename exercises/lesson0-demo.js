@@ -10,10 +10,9 @@ let smallP = 5;//smallP is worth 5 small potatoes
 const POTATOEKING = "Potatoe King";
 sp = 10;
 smallP = 100;
-POTATOEKING = "Potatoe King";
+//POTATOEKING = "Potatoe King";
 
-
-
+let bankAccount = 100;
 
 while("AHLONG" === "AHLONG"){
     bankAccount = bankAccount - 5;
