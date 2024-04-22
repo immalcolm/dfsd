@@ -1,4 +1,5 @@
 const prompt = require('prompt-sync')();
+
 //Write a program that asks the user to enter the value for these three variables: `X`, `Y`, `Z`
 let x = Number.parseInt(prompt("Dollars: "));
 let y = Number.parseInt(prompt("Cents: "));
