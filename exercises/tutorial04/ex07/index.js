@@ -10,5 +10,5 @@ let inventory = [
   // Print updated inventory
   console.log("Updated Inventory:");
   inventory.forEach(item => {
-    console.log(`Product: ${item[0]}, Price: $${item[1]}, Quantity: ${item
-  
+    console.log(`Product: ${item[0]}, Price: $${item[1]}, Quantity: ${item[2]}`);
+  });
