@@ -1,19 +1,34 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>replit</title>
+    <link href="style.css" rel="stylesheet" type="text/css" />
+  </head>
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width">
-  <title>replit</title>
-  <link href="style.css" rel="stylesheet" type="text/css" />
-</head>
+  <body>
+    <form>
+      <label for="txt-first">First Number</label>
+      <input
+        type="text"
+        id="txt-first"
+        name="txt-first"
+        placeholder="Enter first number"
+      />
+      <label for="txt-second">Second Number</label>
+      <input
+        type="text"
+        id="txt-second"
+        name="txt-second"
+        placeholder="Enter second number"
+      />
+      <button id="btn-add">ADD</button>
+    </form>
 
-<body>
-  <input type="text" id="box1" />
-  <input type="text" id="box2" />
-  <button id="calculateBtn">Calculate</button>
-  <script src="script.js"></script>
+    <!-- dump the sum over here-->
+    <h1>Sum is <span id="display-sum">0</span></h1>
 
-</body>
-
+    <script src="script.js"></script>
+  </body>
 </html>

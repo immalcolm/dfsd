@@ -31,6 +31,13 @@ https://www.w3schools.com/js/js_input_examples.asp
         document.getElementById("myFrm").reset();
       });
 
+      //pick a lucky student
+      const studentLucky = document.getElementById("student-lucky");
+      studentLucky.addEventListener("click", function (event) {
+        let luckyStudent = studentArray[Math.floor(Math.random() * studentArray.length)];
+        alert(`Lucky Student: ${luckyStudent.name}`);
+      });
+
       //@TODO
       //create a function based object "template"
       //class is a reserved keyword in JS
@@ -54,22 +61,21 @@ https://www.w3schools.com/js/js_input_examples.asp
           tdName.textContent = student.name;
           tdMobile.textContent = student.mobile;
           tdClass.textContent = student.classGrp;
-          
+
           //append the td to the tr
           tr.appendChild(tdName);
           tr.appendChild(tdMobile);
           tr.appendChild(tdClass);
           //append the tr to the studentList
           studentList.appendChild(tr);
-          
         });
-        document.getElementById("student-count").textContent = studentArray.length;
+        document.getElementById("student-count").textContent =
+          studentArray.length;
         console.log(studentArray);
       }
     </script>
   </head>
   <body>
-    
     <form id="myFrm">
       <input type="text" placeholder="Enter Name" id="txtName" required />
       <input
@@ -83,6 +89,8 @@ https://www.w3schools.com/js/js_input_examples.asp
       <input type="submit" />
     </form>
 
+    <button id="student-lucky">Lucky Student</button>
+
     <h2>Student List (<span id="student-count">0</span>)</h2>
     <table class="styled-table">
       <thead>
@@ -92,9 +100,7 @@ https://www.w3schools.com/js/js_input_examples.asp
           <th>Class</th>
         </tr>
       </thead>
-      <tbody id="student-list">
-       
-      </tbody>
+      <tbody id="student-list"></tbody>
     </table>
   </body>
 </html>

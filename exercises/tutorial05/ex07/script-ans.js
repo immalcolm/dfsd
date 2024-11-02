@@ -16,19 +16,19 @@ in the loop
 const hotList = document.querySelectorAll('li.hot');
 // Change the class attributes with a loop
 for (let i of hotList) {
-  hotList.className = "cool";
+  hotList[i].className = "cool"; //class="cool"
 }
 
 
 // Task 2 TODO
-const hotList2 = document.getElementsByClassName('hot');
+const hotList2 = document.getElementsByClassName('hot'); //class="hot"
 if (hotList2.length >= 3) {
   hotList2[2].className = "cool";
 }
 
 
 // Task 3
-const hotList3 = document.getElementsByTagName('li')
+const hotList3 = document.getElementsByTagName('li')//<li></li>
 if (hotList3.length > 0) {
   hotList3[0].className = "cool";
 }
