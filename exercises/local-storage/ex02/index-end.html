@@ -1,0 +1,100 @@
+<!-- read more 
+https://www.w3schools.com/js/js_input_examples.asp
+-->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>CA Form Object Local Storage</title>
+    <link href="style.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+    <form id="myFrm">
+      <input type="text" placeholder="Enter Name" id="txtName" required />
+      <input
+        type="number"
+        placeholder="Enter Mobile"
+        id="txtMobile"
+        maxlength="8"
+        required
+      />
+      <input type="text" placeholder="Enter Class" id="txtClass" required />
+      <input type="submit" />
+    </form>
+    <table id="studentTable">
+      <tr>
+        <th>Name</th>
+        <th>Mobile</th>
+        <th>Class</th>
+      </tr>
+      <tbody id="studentContent"></tbody>
+    </table>
+    <script>
+      let studentArray = [];
+      updateStudentTable();
+      //retrieve form information when submit
+      document.addEventListener("submit", function (event) {
+        //prevent default action of the form from actually submitting
+        event.preventDefault();
+
+        //@TODO
+        //create objects based on object template and form data
+        //
+        //INSERT YOUR CODE HERE :)
+        //2.
+        //@TODO need to error check the form data
+        let studentName = document.getElementById("txtName").value;
+        let studentMobile = document.getElementById("txtMobile").value;
+        let studentClass = document.getElementById("txtClass").value;
+        //create a student object
+        let student = new Student(studentName, studentMobile, studentClass);
+
+        //retrieve student data and dump into local array
+        studentArray = JSON.parse(localStorage.getItem("students"));
+        studentArray.push(student);
+        console.log(studentArray);
+
+        //set the localstorage back
+        localStorage.setItem("students", JSON.stringify(studentArray));
+
+        //update the student table with the new data using HTML
+        updateStudentTable();
+
+        //clear the form upon each sumission
+        document.getElementById("myFrm").reset();
+      });
+      //@TODO
+      //create a function based object "template"
+      //1.
+      function Student(name, mobile, studentClass) {
+        this.name = name;
+        this.mobile = mobile;
+        this.studentClass = studentClass;
+      }
+
+      function updateStudentTable() {
+        console.log("updating student table");
+        studentArray = JSON.parse(localStorage.getItem("students"));
+
+        let studentContent = document.getElementById("studentContent");
+        studentContentInfo = "";
+
+        //returns null if no data hence set to empty array
+        if(studentArray == null){
+          studentArray = [];
+        }
+        for (let i = 0; i < studentArray.length; i++) {
+          let student = studentArray[i];
+          studentContentInfo += `<tr>
+                  <td>${student.name}</td>
+                  <td>${student.mobile}</td>
+                  <td>${student.studentClass}</td>
+              </tr>`;
+        }
+        studentContent.innerHTML = studentContentInfo;
+      }
+    </script>
+  </body>
+</html>

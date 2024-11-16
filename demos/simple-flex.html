@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flex Sample</title>
+    <style>
+        .flex-container{
+            display:flex;
+            border:1px solid red;
+            flex-direction: row;
+            justify-content: space-around;
+        }
+        div{
+            border:1px solid black;
+        }
+        .sidebar{
+            flex:1;
+        }
+        .content{
+            flex:2;
+        }
+        .item{
+            margin:10px;
+        }
+        ul{
+            list-style-type: none;
+            padding:0;
+        }
+        ul li{
+            font-size: 0.6em;
+        }
+        @media screen and (max-width: 400px){
+            .flex-container{
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="flex-container">
+        <div class="sidebar item">this is just a side bar</div>
+        <div class="content item">this is the main content</div>
+    </div>
+    <div class="flex-container">
+        <div class="sidebar item">this is just a side bar</div>
+        <div class="content item">this is the main content</div>
+    </div>
+    <footer class="flex-container">
+        <div class="item"><img src="" alt="logo"></div>
+        <div class="item">
+            <h6 style="margin:0;">LINKS</h6>
+            <ul>
+                <li><a href="#">HOME</a></li>
+                <li><a href="#">PRODUCTS</a></li>
+                <li><a href="#">CONTACT</a></li>
+            </ul>
+        </div>
+        <div class="item">
+            <h6 style="margin:0;">LINKS</h6>
+            <ul>
+                <li><a href="#">HOME</a></li>
+                <li><a href="#">PRODUCTS</a></li>
+                <li><a href="#">CONTACT</a></li>
+            </ul>
+        </div>
+        <div class="item">
+            <form>
+                <input type="text" name="email" placeholder="Enter your email">
+                <button type="submit">Subscribe</button>
+            </form>
+        </div>
+    </footer>
+</body>
+</html>

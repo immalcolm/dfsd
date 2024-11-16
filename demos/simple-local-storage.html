@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script>
+        
+        localStorage.setItem('name', 'John Doe');
+        console.log(localStorage.getItem('name'));
+
+        let person = {
+            name: 'John',
+            age: 30,
+            city: 'New York'
+        }
+
+        
+        console.log(`Person: ${person}`);
+        //convert the object to a string
+        localStorage.setItem('person', JSON.stringify(person));
+
+        //get the item back
+        let personString = localStorage.getItem('person');
+        //this is a string only info
+        console.log(`Person String: ${personString}`);
+
+        //get the item back as an object
+        let personObject = JSON.parse(personString);
+        //dot notation
+        console.log(`Person Object: ${personObject}.. 
+        Details are: ${personObject.name}, ${personObject.age}, ${personObject.city}`);
+        //bracket notation
+        console.log(`Person Object: ${personObject}.. 
+        Details are: ${personObject['name']}, ${personObject['age']}, ${personObject['city']}`);
+
+        let people = {
+            person1: {
+                name: 'John',
+                age: 30,
+                city: 'New York'
+            },
+            person2: {
+                name: 'Jane',
+                age: 25,
+                city: 'Los Angeles'
+            }
+        }
+
+        localStorage.setItem('people', JSON.stringify(people));
+
+        //retrieve the people object
+        let peopleObj = JSON.parse(localStorage.getItem('people'));
+        console.log(`People Object: ${peopleObj}.. 
+        ${peopleObj.person1.name}, 
+        ${peopleObj.person2.name}`);
+    </script>
+</head>
+<body>
+    
+</body>
+</html>
