@@ -52,7 +52,7 @@ https://www.w3schools.com/js/js_input_examples.asp
         let student = new Student(studentName, studentMobile, studentClass);
 
         //retrieve student data and dump into local array
-        studentArray = JSON.parse(localStorage.getItem("students"));
+        studentArray = JSON.parse(localStorage.getItem("students")) || [];
         studentArray.push(student);
         console.log(studentArray);
 
