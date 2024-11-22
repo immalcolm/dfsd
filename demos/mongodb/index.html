@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://unpkg.com/realm-web/dist/bundle.iife.js"></script>
+    <script src="
+https://cdn.jsdelivr.net/npm/mongoose@8.8.2/dist/browser.umd.min.js
+
+"></script>
+
+<script data-main="script.js" src="require.js"></script>
+
+    <script>
+      // Replace with your App ID from MongoDB Atlas App Services
+      /*
+      const app = new Realm.App({ id: "Malcolm's Org - 2022-11-21" });
+
+      async function connectMongoDB() {
+        try {
+          // Authenticate anonymously (use other methods for production)
+          const user = await app.logIn(Realm.Credentials.anonymous());
+
+          console.log("Logged in as:", user.id);
+
+          // Access your MongoDB collection
+          const mongo = app.currentUser.mongoClient("mongodb-atlas");
+          const collection = mongo
+            .db("your-database-name")
+            .collection("your-collection-name");
+
+          // Perform operations (e.g., Insert, Query)
+          await collection.insertOne({ name: "Test", age: 30 });
+          const result = await collection.find({ age: 30 });
+
+          console.log("Query Result:", result);
+        } catch (error) {
+          console.error("Error connecting to MongoDB:", error);
+        }
+      }
+
+      connectMongoDB();
+      */
+    </script>
+  </head>
+  <body></body>
+</html>

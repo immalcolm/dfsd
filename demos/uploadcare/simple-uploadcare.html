@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/@uploadcare/file-uploader@1/web/uc-file-uploader-regular.min.css"
+  >
+  <script type="module">
+    import * as UC from 'https://cdn.jsdelivr.net/npm/@uploadcare/file-uploader@1/web/uc-file-uploader-regular.min.js';
+    UC.defineComponents(UC);
+  </script>
+  </head>
+  <body>
+
+  
+  <uc-config
+    ctx-name="my-uploader"
+    source-list="local, url, camera, dropbox"
+    pubkey="6baac0c4874ccb7227db"
+  ></uc-config>
+  
+  <uc-file-uploader-regular
+    ctx-name="my-uploader"
+    class="uc-light"
+  ></uc-file-uploader-regular>
+  </body>
+</html>

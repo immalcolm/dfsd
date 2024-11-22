@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.7/axios.min.js"></script>
+  </head>
+  <body>
+    <img src="" id="genai" />
+    <canvas id="canvas" width="512" height="512"></canvas>
+    <script>
+      async function genImage() {
+        let data = JSON.stringify({
+          inputs: "a horse",
+        });
+
+        let config = {
+          method: "post",
+          maxBodyLength: Infinity,
+          url: "https://fast-open-source-ai.p.rapidapi.com/stabilityai/stable-diffusion-xl-base-1.0",
+          headers: {
+            "x-rapidapi-key":
+              "7372e723e1mshd0fb4693fd801f3p1f951ajsn8c5b81d515d4",
+            "x-rapidapi-host": "fast-open-source-ai.p.rapidapi.com",
+            "content-type": "application/json",
+          },
+          data: data,
+        };
+        const canvas = document.getElementById("canvas");
+
+        axios
+          .request(config)
+          .then((response) => {
+            console.log("json" + JSON.stringify(response.data));
+            console.log(response.data);
+            let blob = response.data;
+            canvas.toBlob(
+              (blob) => {
+                const anchor = document.getElementById("download-link");
+                anchor.href = URL.createObjectURL(blob);
+                document.getElementById("genai").src = URL.createObjectURL(blob);
+              },
+              "image/jpeg",
+              0.9
+            );
+            /*
+            canvas.toBlob(
+              (blob) => {
+                const anchor = document.createElement("a");
+                anchor.download = "my-file-name.jpg"; // optional, but you can give the file a name
+                anchor.href = URL.createObjectURL(blob);
+
+                anchor.click(); // ✨ magic!
+
+                URL.revokeObjectURL(anchor.href); // remove it from memory and save on memory! 😎
+              },
+              "image/jpeg",
+              0.9
+            );*/
+            /*
+            canvas.toBlob((blob) => {
+              const newImg = document.createElement("img");
+              const url = URL.createObjectURL(blob);
+
+              newImg.onload = () => {
+                // no longer need to read the blob so it's revoked
+                URL.revokeObjectURL(url);
+              };
+
+              newImg.src = url;
+              document.body.appendChild(newImg);
+            });
+
+            document.getElementById("genai").src = URL.createObjectURL(
+              response.data.blob
+            );*/
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+      genImage();
+    </script>
+  </body>
+</html>

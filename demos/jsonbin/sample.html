@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    
+    <script>
+      const jsonData = {
+        name: "John Doe",
+        age: 30,
+        hobbies: ["reading", "traveling", "coding"],
+      };
+
+      function createBin() {
+        fetch("https://api.jsonbin.io/v3/b", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-Master-Key":
+              "$2a$10$GFhhne7C8VHHXuLMeb7sW.mtnNxK5sCKCboGqEZc6oYoGL1CH0EpG",
+          },
+          body: JSON.stringify(jsonData),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            console.log("Bin created:", data);
+            console.log("Bin ID:", data.metadata.id); // Use this ID for retrieving data
+          })
+          .catch((error) => console.error("Error:", error));
+      }
+
+      function readBin(binId) {
+        fetch(`https://api.jsonbin.io/v3/b/${binId}`, {
+          method: "GET",
+          headers: {
+            "X-Master-Key": "$2a$10$GFhhne7C8VHHXuLMeb7sW.mtnNxK5sCKCboGqEZc6oYoGL1CH0EpG",
+          },
+        })
+          .then((response) => response.json())
+          .then((data) => console.log("Retrieved data:", data.record))
+          .catch((error) => console.error("Error:", error));
+      }
+      readBin('673db92aad19ca34f8cd1f77');
+    </script>
+  </body>
+  
+</html>

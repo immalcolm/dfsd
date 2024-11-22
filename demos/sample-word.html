@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+
+        const stockContent = {
+            "success": `This chart shows the daily closing price for
+        ${stockContent.stockTicker} stock over the latest 100 data points.
+        The orange line represents the predicted stock price for the
+        next day and next week. <br><br>
+        Based on technical indicators and fundamental analysis,
+        the AI has predicted the stock price for
+        ${stockTicker} on ${predData.dates[0]`
+
+            "stockTicker": ""
+        }
+
+
+        if{
+        aa
+          document.getElementById(
+          "stock-desc"
+        ).innerHTML = stockContent
+        } is $${predData.prices[0].toFixed(2)} and on ${
+          predData.dates[1]
+        } is $${predData.prices[1].toFixed(2)}. <br><br>
+        The prediction has a confidence level of 0.95, and the recommendation is to <strong>'buy'</strong> the stock.`;
+      } else {
+        document.getElementById(
+          "stock-desc"
+        ).innerHTML = `This chart shows the daily closing price for ${stockTicker}
+         stock over the latest 100 data points. The prediction data is
+         unavailable at the moment.`;
+      }
+    </script>
+  </body>
+</html>
