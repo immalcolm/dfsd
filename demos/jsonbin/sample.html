@@ -6,8 +6,47 @@
     <title>Document</title>
   </head>
   <body>
-    
+    <h1>JSON Bin Data</h1>
+    <div>
+      <button id="btn-create-bin">Create Bin</button>
+      <button id="btn-read-bin">Read Bin</button>
+      <button id="btn-update-bin">Update Bin</button>
+    </div>
+    <div id="bin-data">
+      <p>Bin Data:</p>
+      <pre id="bin-data-content"></pre>
+    </div>
+    <div id="msg">
+      <p>Message:</p>
+      <pre id="msg-content"></pre>
+    </div>
+
+    <form>
+      <input type="text" id="txt-name" placeholder="Name" />
+      <input type="number" id="txt-age" placeholder="Age" />
+      <input type="text" id="txt-hobbies" placeholder="Hobbies" />
+      <button id="btn-add-data">Add Member</button>
+    </form>
     <script>
+      const BINID = "674040a9e41b4d34e4587bbd";
+      const XMASTERKEY = `$2a$10$GFhhne7C8VHHXuLMeb7sW.mtnNxK5sCKCboGqEZc6oYoGL1CH0EpG`;
+
+      document
+        .getElementById("btn-create-bin")
+        .addEventListener("click", createBin);
+
+      document
+        .getElementById("btn-read-bin")
+        .addEventListener("click", function () {
+          readBin("673db92aad19ca34f8cd1f77");
+        });
+    
+        document.getElementById("btn-add-data").addEventListener("click", function (e) {
+          e.preventDefault();
+          updateBin(BINID);
+        });
+
+      //sample JSON data
       const jsonData = {
         name: "John Doe",
         age: 30,
@@ -15,36 +54,79 @@
       };
 
       function createBin() {
+        const id = Date.now().toString();
+        jsonData.id = id;
+
         fetch("https://api.jsonbin.io/v3/b", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
             "X-Master-Key":
-              "$2a$10$GFhhne7C8VHHXuLMeb7sW.mtnNxK5sCKCboGqEZc6oYoGL1CH0EpG",
+              XMASTERKEY,
           },
           body: JSON.stringify(jsonData),
         })
           .then((response) => response.json())
           .then((data) => {
+            document.getElementById("bin-data-content").textContent =
+              JSON.stringify(data, null, 2);
             console.log("Bin created:", data);
             console.log("Bin ID:", data.metadata.id); // Use this ID for retrieving data
           })
           .catch((error) => console.error("Error:", error));
       }
 
+      //bins are fixed
       function readBin(binId) {
         fetch(`https://api.jsonbin.io/v3/b/${binId}`, {
           method: "GET",
           headers: {
-            "X-Master-Key": "$2a$10$GFhhne7C8VHHXuLMeb7sW.mtnNxK5sCKCboGqEZc6oYoGL1CH0EpG",
+            "Content-Type": "application/json",
+            "X-Master-Key": XMASTERKEY,
           },
         })
           .then((response) => response.json())
-          .then((data) => console.log("Retrieved data:", data.record))
+          .then((data) => {
+
+
+            document.getElementById("bin-data-content").textContent =
+              JSON.stringify(data.record, null, 2);
+
+            document.getElementById("msg-content").innerHTML =
+              "Bin read successfully";
+            console.log("Retrieved data:", data.record);
+          })
           .catch((error) => console.error("Error:", error));
       }
-      readBin('673db92aad19ca34f8cd1f77');
+
+      function updateBin(binId) {
+
+        const memberData = {
+          name: document.getElementById("txt-name").value,
+          age: document.getElementById("txt-age").value,
+          hobbies: document.getElementById("txt-hobbies").value.split(",")
+        };
+
+        const id = Date.now().toString();
+        memberData.id = id;
+        
+        fetch(`https://api.jsonbin.io/v3/b/${binId}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            "X-Master-Key": XMASTERKEY,
+          },
+          body: JSON.stringify(jsonData),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            document.getElementById("bin-data-content").textContent =
+              JSON.stringify(data.record, null, 2);
+            console.log("Bin updated:", data.record);
+          })
+          .catch((error) => console.error("Error:", error));
+      }
+      readBin("673db92aad19ca34f8cd1f77");
     </script>
   </body>
-  
 </html>
