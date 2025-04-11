@@ -1,3 +1,6 @@
+//package to install 
+//import in
+//how to install >> npm install prompt-sync
 const prompt = require('prompt-sync')();
 
 let num1 = prompt("Enter a number: ");
