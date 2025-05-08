@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        body{
+            font-family: Arial, Helvetica, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+
+        #userInfo{
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .userCard{
+            border:1px solid #ddd;
+            padding: 10px; 
+            border-radius: 8px; 
+            width:200px;
+        }
+
+        .userCard img{
+            border-radius: 50%;
+        }
+
+        button{
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    
+    <h1>Random User</h1>
+    <button id="generateUser">Get User</button>
+    <div id="userInfo">
+
+    </div>
+
+    <!-- put in the AXIOS library just before our custom JS script-->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        //fetch random users from https://randomuser.me/api --> API we are targeting
+        //picture, name, country, email
+        
+        //get all the key DOM elements to update
+        const generateUserBtn = document.getElementById("generateUser");
+        const userInfo = document.getElementById("userInfo");
+
+        //add in event listner to the button
+        generateUserBtn.addEventListener("click", generateUser);
+
+        function generateUser(){
+            console.log("Generating user...");
+            //using AXIOS get method to fetch data from API
+            axios.get("https://randomuser.me/api/?results=5")
+            .then((response)=>{
+                //do any processing of the data here...
+                /*
+                const user = response.data.results[0];
+                console.log(user);
+                userInfo.innerHTML = `
+                    <img src="${user.picture.large}"> 
+                    <h2>${user.name.title}</h2>
+                    <p>Country: ${user.location.country}</p>
+                    <p>Email: ${user.email}</p>
+                `;//using template literals
+                */
+               //v2 
+               const users = response.data.results; //retreiving all queried results
+               users.forEach(user=>{
+                const card = document.createElement("div");
+                card.className = "userCard"; ///--> <div class="userCard">
+                
+                card.innerHTML = `
+                    <img src="${user.picture.large}" alt="User Image">
+                    <h2>${user.name.title} ${user.name.first} ${user.name.last}</h2>
+                    <p>Country: ${user.location.country}</p>
+                    <p>Email: ${user.email}</p>
+                `;//inside the card we will dump in the particular loop-ed user data
+                
+                userInfo.appendChild(card);
+               });//for each user that is returned, create a Card UI 
+
+
+            })
+            .catch((error)=>{
+                console.error("Error in fetching data", error);
+                userInfo.innerHTML = `<p>Error in fetching data</p>`;
+            })
+        }
+
+    </script>
+</body>
+</html>

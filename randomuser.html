@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+        img {
+            border-radius: 50%;
+        }
+    </style>
+  </head>
+  <body>
+    <h1>Random User Generator</h1>
+    <img src="" alt="User Profile" id="userImage" />
+    <h4>Email: <span id="userEmail"></span></h4>
+    <button id="generateUser">Generate me a USER!!</button>
+
+    <script>
+      //generates a random user with profile picture and data
+      //https://randomuser.me/api
+
+      //1. get the key DOM elements to update
+      const userImage = document.getElementById("userImage");
+      const userEmail = document.getElementById("userEmail");
+      const generateUserBtn = document.getElementById("generateUser");
+
+      //add in event listner to the button
+      generateUserBtn.addEventListener("click", generateUser);
+
+      function generateUser() {
+        fetch("https://randomuser.me/api")
+          .then((response) => response.json()) //parse response into JSON. nice to modify
+          .then((data) => {
+            //display data or process the data
+            console.log(data.results[0].email);
+            console.log(data.results[0].picture.large);
+
+            //2. Update the DOM (actual HTML, update the display)
+            userEmail.innerHTML = data.results[0].email;
+            userImage.src = data.results[0].picture.large;
+          });
+      }
+      generateUser(); //generate user on page load and first load
+
+      /*
+       "picture": {
+                "large": "https://randomuser.me/api/portraits/men/6.jpg",
+                "medium": "https://randomuser.me/api/portraits/med/men/6.jpg",
+                "thumbnail": "https://randomuser.me/api/portraits/thumb/men/6.jpg"
+            },
+            */
+    </script>
+  </body>
+</html>

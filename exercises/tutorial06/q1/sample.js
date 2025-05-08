@@ -35,6 +35,7 @@ let student = {
 //Q1: Q1: Write the code that will display the first name and last name of the student in one line inside the console:
 console.log(`------Q1------`);
 console.log(student.firstName + ' ' + student.lastName);
+console.log(`${student.firstName} ${student.lastName}`)
 
 //Q2: Display the age of the student in the console:
 console.log(`------Q2------`);

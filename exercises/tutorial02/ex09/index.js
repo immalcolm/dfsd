@@ -1,5 +1,5 @@
 // Step 1: Initialize an array with several numbers
-let numbers = [10, 20, 30, 40, 50];
+const numbers = [10, 20, 30, 40, 50];
 
 // Step 2: Declare a variable to hold the sum
 let sum = 0;

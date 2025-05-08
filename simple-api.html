@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+  <h1>Simple API</h1>
+  <h4>IP Address:<span id="ip"></span></h4>
+  <h4>City:<span id="city"></span></h4>
+  
+  <body>
+    <script>
+      //1. get the DOM element to update
+      const ipElement = document.getElementById("ip");
+      const cityElement = document.getElementById("city");
+      //2. create a function to update/fetch the data
+      const requestOptions = {
+        method: "GET",
+        redirect: "follow",
+      };
+
+      fetch("https://ipapi.co/json", requestOptions)
+        .then((response) => response.json())
+        .then((result) => {
+            //3. Update the DOM 
+            ipElement.innerHTML = result.ip;
+            cityElement.innerHTML = result.city;
+            console.log(result)
+        })
+        .catch((error) => console.error(error));
+    </script>
+  </body>
+</html>

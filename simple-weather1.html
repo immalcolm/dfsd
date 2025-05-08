@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Singapore Weather Forecast</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f4f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .weather-card {
+            background: white;
+            padding: 20px 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 300px;
+        }
+
+        .weather-icon {
+            font-size: 50px;
+            margin-bottom: 10px;
+        }
+
+        .forecast {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .temperature {
+            font-size: 18px;
+            color: #555;
+        }
+
+        .error {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="weather-card" id="weatherCard">
+    <div class="weather-icon" id="weatherIcon">☁️</div>
+    <div class="forecast" id="forecast">Loading...</div>
+    <div class="temperature" id="temperature">-</div>
+</div>
+
+<script>
+function getWeatherIcon(forecastText) {
+    forecastText = forecastText.toLowerCase();
+    if (forecastText.includes('rain')) return '🌧️';
+    if (forecastText.includes('thunder')) return '⛈️';
+    if (forecastText.includes('cloud')) return '☁️';
+    if (forecastText.includes('sun') || forecastText.includes('fair')) return '☀️';
+    return '🌈'; // Default icon
+}
+
+function loadWeather() {
+    const weatherDiv = document.getElementById('weatherCard');
+    const forecastDiv = document.getElementById('forecast');
+    const temperatureDiv = document.getElementById('temperature');
+    const weatherIconDiv = document.getElementById('weatherIcon');
+
+    fetch('https://corsproxy.io/?https://api-open.data.gov.sg/v2/real-time/api/twenty-four-hr-forecast', {
+        headers: {
+            'Accept': 'application/json'
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error("Network response was not OK");
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data && data.items && data.items.length > 0) {
+            const forecast = data.items[0].general.forecast;
+            const tempLow = data.items[0].general.temperature.low;
+            const tempHigh = data.items[0].general.temperature.high;
+
+            forecastDiv.textContent = forecast;
+            temperatureDiv.textContent = `Temperature: ${tempLow}°C - ${tempHigh}°C`;
+            weatherIconDiv.textContent = getWeatherIcon(forecast);
+        } else {
+            forecastDiv.textContent = "No weather data available.";
+            temperatureDiv.textContent = "-";
+        }
+    })
+    .catch(error => {
+        console.error('Error fetching weather:', error);
+        forecastDiv.innerHTML = "<span class='error'>Failed to load weather data.</span>";
+        temperatureDiv.textContent = "-";
+        weatherIconDiv.textContent = "❗";
+    });
+}
+
+loadWeather();
+</script>
+
+</body>
+</html>
