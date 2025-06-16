@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=<device-width>, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>Simple Football API Demo</h1>
+    <p>
+      This demo fetches the standings from a simple football API and logs the
+      result to the console.
+    </p>
+    <p>
+      The API endpoint is: <code>http://localhost:3000/standings</code>
+    </p>
+   
+    
+    <script>
+      const myHeaders = new Headers();
+      myHeaders.append("X-Auth-Token", "aab577d054ac4fb593dff77ebb70c726");
+
+      const requestOptions = {
+        method: "GET",
+        headers: myHeaders,
+        redirect: "follow",
+      };
+
+      fetch(
+        `http://localhost:3000/standings`,
+        requestOptions
+      )
+        .then((response) => response.text())
+        .then((result) => console.log(result))
+        .catch((error) => console.error(error));
+    </script>
+  </body>
+</html>

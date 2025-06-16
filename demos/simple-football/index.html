@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=<device-width>, initial-scale=1.0" />
+    <title>Soccer Enthuist</title>
+  </head>
+  <body>
+    <h1>Simple Football</h1>
+    <h2>Get Team Info</h2>
+
+    <input type="text" id="teamName" placeholder="Enter team name" value="" />
+    <button id="getTeamInfo">Get Team Info</button>
+    <div id="teamInfo">
+      <img src="" id="teamLogo" alt="Team Logo" />
+      <h3>Team Information</h3>
+      <p id="teamNameDisplay"></p>
+      <p id="teamStadium"></p>
+      <p id="teamDescription"></p>
+    </div>
+    <script>
+      const getTeamInfoBtn = document.getElementById("getTeamInfo");
+      const teamLogo = document.getElementById("teamLogo");
+
+      getTeamInfoBtn.addEventListener("click", getTeamInfo);
+
+      function getTeamInfo() {
+        let teamName = document.getElementById("teamName").value;
+        if (!teamName) {
+          teamName = "Liverpool";
+        }
+        const url = `https://www.thesportsdb.com/api/v1/json/3/searchteams.php?t=${teamName}`;
+
+        fetch(url)
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(data);
+            if (data.teams && data.teams.length > 0) {
+              const team = data.teams[0];
+              document.getElementById("teamNameDisplay").innerText =
+                team.strTeam;
+              document.getElementById("teamStadium").innerText =
+                "Stadium: " + team.strStadium;
+              document.getElementById("teamDescription").innerText =
+                "Description: " + team.strDescriptionEN;
+
+              teamLogo.src = team.strBadge;
+            } else {
+              console.log("No team found");
+            }
+          })
+          .catch((error) => console.error("Error:", error));
+      }
+    </script>
+  </body>
+</html>

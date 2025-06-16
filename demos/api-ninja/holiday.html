@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Holiday App</title>
+  </head>
+  <body>
+    <h1>Holiday App</h1>
+    <h2>Key in your country of choice!</h2>
+    <input type="text" placeholder="Enter Country Code" id="countryCode" />
+    <button id="holidayBtn">Get Holiday!!!</button>
+    <!-- dump all holidays inside here -->
+    <div id="holidayContainer"></div>
+
+    <!-- <div id="holiday"></div>-->
+    <!-- JavaScript goes here -->
+    <script>
+      //get the DOM element
+      //const holidayText = document.getElementById("holiday");
+      const holidayContainer = document.getElementById("holidayContainer");
+      const myHeaders = new Headers();
+      myHeaders.append("X-Api-Key", "txdXnDUFzvyCcY5KRVaGtw==rHLT8d2ySopuRBrd");
+
+      const requestOptions = {
+        method: "GET",
+        headers: myHeaders,
+        redirect: "follow",
+      };
+
+      const countryCode = document.getElementById("countryCode");
+      const holidayBtn = document.getElementById("holidayBtn");
+
+      holidayBtn.addEventListener("click", function () {
+        //get value of inut field ("countryCode")
+        const countryValue = countryCode.value;
+        fetch(
+          `https://api.api-ninjas.com/v1/publicholidays?country=${countryValue}`,
+          requestOptions
+        )
+          .then((response) => response.json())
+          .then((result) => {
+            //loop through holiday
+            let holidayContent = "";
+            //cycle through the result
+            //get date, day and name of holiday
+            for (
+              let holidayCount = 0;
+              holidayCount < result.length;
+              holidayCount++
+            ) {
+              holidayContent += `
+                    <div>
+                        <h2>${result[holidayCount].date}<span>(${result[holidayCount].local_name})</span></h2>
+                        <h3>${result[holidayCount].name}</h3>
+                    </div>
+                `;
+            }
+            holidayContainer.innerHTML = holidayContent;
+            //holidayText.innerHTML = result[0].name;
+          })
+          .catch((error) => console.error(error));
+      });
+    </script>
+  </body>
+</html>
