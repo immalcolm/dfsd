@@ -1,3 +1,23 @@
+export default function handler(req, res) {
+  const {
+    query: { params = [] },
+    method,
+  } = req;
+
+  // If no params, return a simple message
+  if (params.length === 0) {
+    return res.status(200).json({ message: "All goals endpoint works!" });
+  }
+
+  // If one param, return it
+  if (params.length === 1) {
+    return res.status(200).json({ message: `Goal ID is ${params[0]}` });
+  }
+
+  // If more than one param, return them all
+  return res.status(200).json({ message: `Params: ${params.join(", ")}` });
+}
+/*
 let goals = [
   { id: 1, title: "Learn JavaScript", completed: false },
   { id: 2, title: "Build a web app", completed: false },
@@ -50,3 +70,4 @@ export default function handler(req, res) {
       return res.status(405).json({ error: `Method ${method} not allowed` });
   }
 }
+*/
