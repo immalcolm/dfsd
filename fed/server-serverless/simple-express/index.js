@@ -8,12 +8,13 @@ const express = require("express");
 const app = express();
 const PORT_NUMBER = 3000; // Default port number
 const PORT = process.env.PORT || PORT_NUMBER; // Default port
+const router = express.Router(); // Create a new router instance
 
 // Middleware to parse JSON and URL-encoded bodies
 // This allows us to handle incoming requests with JSON payloads and form data
 // Important to place these middleware before defining routes
 app.use(express.json()); // Middleware to parse JSON bodies
-app.use(express.urlencoded({ extended: true })); // Middleware to parse URL-encoded bodies
+app.use(express.urlencoded({ extended: true })); // Middleware to parse URL-encoded bodies // allow us to send form data
 app.use(express.static("public"));//lets serve from public folder
 
 // Define a simple route
@@ -30,13 +31,14 @@ let id = 4; // Initialize ID for new goals
 
 // let's create a route for goals
 // This route will handle GET requests to fetch all goals
-app.get("/goals", (req, res) => {
+// use app.get() if using normal routing
+router.get("/goals", (req, res) => {
   // In a real application, you would fetch goals from a database
   console.log("Fetching goals");
   res.json(goals);
 });
 
-app.get("/goals/:id", (req, res) => {
+router.get("/goals/:id", (req, res) => {
     const goalId = parseInt(req.params.id, 10); //ensure we parse the
     console.log(`Fetching goal with ID: ${goalId}`);
     const goal = goals.find((g) => g.id === goalId);
@@ -50,7 +52,7 @@ app.get("/goals/:id", (req, res) => {
 });
 
 // Create a new goal
-app.post("/goals", (req, res) => {
+router.post("/goals", (req, res) => {
   // In a real application, you would save the goal to a database
   // assume req.body contains the new goal data
   console.log("Creating a new goal");
@@ -77,7 +79,7 @@ app.post("/goals", (req, res) => {
 });
 
 // Update a goal by ID
-app.put("/goals/:id", (req, res) => {
+router.put("/goals/:id", (req, res) => {
   const goalId = parseInt(req.params.id, 10); //ensure we parse the ID as an integer
 
   console.log(`Updating goal with ID: ${goalId}`);
@@ -95,7 +97,7 @@ app.put("/goals/:id", (req, res) => {
 
 
 // Delete a goal by ID
-app.delete("/goals/:id", (req, res) => {
+router.delete("/goals/:id", (req, res) => {
   const goalId = parseInt(req.params.id, 10);
   console.log(`Deleting goal with ID: ${goalId}`);
   const goalIndex = goals.findIndex((g) => g.id === goalId);
@@ -109,6 +111,8 @@ app.delete("/goals/:id", (req, res) => {
   }
 });
 
+//let's add a route prefix for API versioning
+app.use("/api/v1", router);
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
