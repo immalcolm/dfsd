@@ -16,7 +16,7 @@ export default function handler(req, res) {
   const urlParts = url.split("/");
   const goalId = parseInt(urlParts[urlParts.length - 1], 10);
 
-  if (url.startsWith("/api/v1/goals")) {
+  if (url.startsWith("/api/goals")) {
     switch (method) {
       case "GET":
         if (!isNaN(goalId) && urlParts.length > 4) {
