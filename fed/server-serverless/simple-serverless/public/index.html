@@ -23,10 +23,13 @@
       cursor: pointer;
       margin-right: 0.5rem;
     }
+    button.delete {
+      background-color: #dc3545;
+    }
     input[type="text"] {
       padding: 0.4rem;
       margin-right: 0.5rem;
-      width: 300px;
+      width: 250px;
     }
     .goal {
       background: #fff;
@@ -38,7 +41,7 @@
   </style>
 </head>
 <body>
-  <h1>Goals CRUD (Serverless)</h1>
+  <h1>🎯 Goals CRUD (Serverless on Vercel)</h1>
 
   <h2>Add New Goal</h2>
   <form id="addGoalForm">
@@ -50,57 +53,89 @@
   <div id="goalList">Loading...</div>
 
   <script>
-    document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", () => {
+      const goalList = document.getElementById("goalList");
       const goalInput = document.getElementById("goalInput");
       const addGoalForm = document.getElementById("addGoalForm");
-      const goalList = document.getElementById("goalList");
+
+      async function safeJson(res) {
+        const text = await res.text();
+        try {
+          return JSON.parse(text);
+        } catch {
+          throw new Error("Invalid JSON: " + text);
+        }
+      }
 
       async function loadGoals() {
-        const res = await fetch("/api/goals");
-        const goals = await res.json();
-        goalList.innerHTML = "";
-        goals.forEach(goal => {
-          const div = document.createElement("div");
-          div.className = "goal";
-          div.innerHTML = `
-            <strong>${goal.title}</strong> - ${goal.completed ? "✅" : "❌"}<br/>
-            <input type="text" value="${goal.title}" id="edit-${goal.id}" />
-            <button data-id="${goal.id}" class="update-btn">Update</button>
-            <button data-id="${goal.id}" class="delete-btn">Delete</button>
-          `;
-          goalList.appendChild(div);
-        });
+        goalList.textContent = "Loading...";
+        try {
+          const res = await fetch("/api/goals");
+          if (!res.ok) throw new Error("Fetch failed: " + res.status);
+          const goals = await safeJson(res);
+          goalList.innerHTML = "";
+          goals.forEach(goal => {
+            const div = document.createElement("div");
+            div.className = "goal";
+            div.innerHTML = `
+              <strong>${goal.title}</strong> - ${goal.completed ? "✅" : "❌"}<br/>
+              <input type="text" value="${goal.title}" id="edit-${goal.id}" />
+              <button data-id="${goal.id}" class="update-btn">Update</button>
+              <button data-id="${goal.id}" class="delete-btn delete">Delete</button>
+            `;
+            goalList.appendChild(div);
+          });
+        } catch (err) {
+          goalList.innerHTML = `<p style="color:red;">⚠️ ${err.message}</p>`;
+        }
       }
 
       addGoalForm.addEventListener("submit", async (e) => {
         e.preventDefault();
         const title = goalInput.value.trim();
         if (!title) return;
-        await fetch("/api/goals", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ title })
-        });
-        goalInput.value = "";
-        await loadGoals();
+        try {
+          const res = await fetch("/api/goals", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ title })
+          });
+          if (!res.ok) throw new Error("POST failed: " + res.status);
+          await loadGoals();
+          goalInput.value = "";
+        } catch (err) {
+          alert(err.message);
+        }
       });
 
       goalList.addEventListener("click", async (e) => {
         const id = e.target.dataset.id;
+        if (!id) return;
+
         if (e.target.classList.contains("delete-btn")) {
-          await fetch(`/api/goals/${id}`, { method: "DELETE" });
-          await loadGoals();
+          try {
+            const res = await fetch(`/api/goals/${id}`, { method: "DELETE" });
+            if (!res.ok) throw new Error("DELETE failed");
+            await loadGoals();
+          } catch (err) {
+            alert(err.message);
+          }
         }
 
         if (e.target.classList.contains("update-btn")) {
-          const input = document.getElementById(`edit-${id}`);
-          const updatedTitle = input.value.trim();
-          await fetch(`/api/goals/${id}`, {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ title: updatedTitle })
-          });
-          await loadGoals();
+          const updatedTitle = document.getElementById(`edit-${id}`).value.trim();
+          if (!updatedTitle) return;
+          try {
+            const res = await fetch(`/api/goals/${id}`, {
+              method: "PUT",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ title: updatedTitle })
+            });
+            if (!res.ok) throw new Error("PUT failed");
+            await loadGoals();
+          } catch (err) {
+            alert(err.message);
+          }
         }
       });
 
