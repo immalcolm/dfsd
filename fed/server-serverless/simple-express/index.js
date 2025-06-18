@@ -9,10 +9,12 @@ const app = express();
 const PORT_NUMBER = 3000; // Default port number
 const PORT = process.env.PORT || PORT_NUMBER; // Default port
 
-//app.use(express.json()); // default Middleware to parse JSON bodies
-
-//lets serve from public folder
-app.use(express.static("public"));
+// Middleware to parse JSON and URL-encoded bodies
+// This allows us to handle incoming requests with JSON payloads and form data
+// Important to place these middleware before defining routes
+app.use(express.json()); // Middleware to parse JSON bodies
+app.use(express.urlencoded({ extended: true })); // Middleware to parse URL-encoded bodies
+app.use(express.static("public"));//lets serve from public folder
 
 // Define a simple route
 app.get("/", (req, res) => {
@@ -24,6 +26,7 @@ let goals = [
   { id: 2, title: "Build a web app", completed: false },
   { id: 3, title: "Master Node.js", completed: false },
 ];
+let id = 4; // Initialize ID for new goals
 
 // let's create a route for goals
 // This route will handle GET requests to fetch all goals
@@ -33,6 +36,19 @@ app.get("/goals", (req, res) => {
   res.json(goals);
 });
 
+app.get("/goals/:id", (req, res) => {
+    const goalId = parseInt(req.params.id, 10); //ensure we parse the
+    console.log(`Fetching goal with ID: ${goalId}`);
+    const goal = goals.find((g) => g.id === goalId);
+    if (goal) {
+        console.log(`Goal found: ${JSON.stringify(goal)}`);
+        res.json(goal);
+    } else {
+        console.log(`Goal with ID ${goalId} not found`);
+        res.status(404).json({ error: "Goal not found" });
+    }
+});
+
 // Create a new goal
 app.post("/goals", (req, res) => {
   // In a real application, you would save the goal to a database
@@ -40,10 +56,20 @@ app.post("/goals", (req, res) => {
   console.log("Creating a new goal");
   // writing a simple validation to check if the goal has a title
   // good practice is to validate the request body before processing it
+  console.log(`Request method: ${req.method}`);
+  console.log(req.body);
+  console.log(`Request body: ${JSON.stringify(req.body)}`);
   if (!req.body || !req.body.title) {
     console.log("Invalid goal data");
     return res.status(400).json({ error: "Goal title is required" });
   }
+
+  //completed validation logic here
+  if(!req.body.completed){
+    req.body.completed = false; //default value for completed
+  }
+  
+  // Create a new goal object with an auto-incremented ID
   const goal = { id: id++, ...req.body };
   console.log(`Goal created: ${JSON.stringify(goal)}`);
   goals.push(goal);
@@ -82,6 +108,7 @@ app.delete("/goals/:id", (req, res) => {
     res.status(404).json({ error: "Goal not found" });
   }
 });
+
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
