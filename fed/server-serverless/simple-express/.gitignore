@@ -1,0 +1,13 @@
+
+
+.env
+.DS_Store
+.vscode
+npm-debug.log
+
+# Optional npm cache directory
+.npm
+
+# ignore node_modules
+node_modules
+
